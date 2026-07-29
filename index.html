@@ -1,3 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>太平山二天一夜行程手冊 (V1)</title>
+    <style>
+        :root {
+            --primary-color: #2e5a44;      /* 森林深綠 */
+            --primary-light: #eef4f0;     /* 淺綠背景 */
+            --accent-color: #d97706;       /* 木質暖橘 */
+            --bg-color: #f6f8f6;          /* 頁面背景 */
+            --card-bg: #ffffff;            /* 卡片背景 */
+            --text-color: #2d3748;        /* 主要文字 */
+            --text-muted: #718096;       /* 次要文字 */
+            --border-color: #e2e8f0;      /* 邊框顏色 */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            padding: 20px 12px;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        /* 頂部 Banner */
+        header {
+            background: linear-gradient(135deg, #1e3a2b 0%, #2e5a44 100%);
+            color: #ffffff;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2em;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        header .subtitle {
+            font-size: 1.05em;
+            color: #a3b899;
+            letter-spacing: 1px;
+        }
+
+        .content {
+            padding: 30px 25px;
+        }
+
+        /* 區塊標題 */
+        .section-title {
+            font-size: 1.35em;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+            margin: 35px 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title:first-of-type {
+            margin-top: 5px;
+        }
+
+        /* 天數卡片標題 */
+        .day-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px 8px 0 0;
+            font-size: 1.2em;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-box {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 30px;
+            background: #fff;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        /* 表格樣式 */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95em;
+        }
+
+        th, td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafdfa;
+        }
+
+        .time-col {
+            width: 15%;
+            font-weight: bold;
+            color: var(--primary-color);
+            white-space: nowrap;
+        }
+
+        .activity-col {
+            width: 35%;
+            font-weight: 600;
+        }
+
+        .note-col {
+            width: 50%;
+            color: #4a5568;
+            font-size: 0.9em;
+        }
+
+        /* 步道比較卡片網格 (Table layout for WeasyPrint/Classic Compatibility) */
+        .grid-3 {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            border-spacing: 12px 0;
+            margin: 0 -12px;
+        }
+
+        .grid-col {
+            display: table-cell;
+            vertical-align: top;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .trail-card h4 {
+            color: var(--primary-color);
+            font-size: 1.1em;
+            margin-bottom: 6px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 6px;
+        }
+
+        .trail-card .rating {
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .trail-card ul {
+            padding-left: 18px;
+            font-size: 0.88em;
+            color: #4a5568;
+            margin-bottom: 12px;
+        }
+
+        .trail-card li {
+            margin-bottom: 4px;
+        }
+
+        .trail-card .time-tag {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            font-size: 0.82em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        /* 提示資訊盒 */
+        .info-box {
+            background-color: #fefce8;
+            border-left: 4px solid var(--accent-color);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+        }
+
+        .info-box h4 {
+            color: #b45309;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .info-box ul {
+            padding-left: 20px;
+            color: #451a03;
+        }
+
+        .info-box li {
+            margin-bottom: 4px;
+        }
+
+        /* 雙欄清單佈局 */
+        .two-column-list {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            border-spacing: 12px 0;
+            margin: 0 -12px;
+        }
+
+        .col-card {
+            display: table-cell;
+            vertical-align: top;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .col-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        .col-card ul {
+            padding-left: 18px;
+            font-size: 0.9em;
+            color: #4a5568;
+        }
+
+        .col-card li {
+            margin-bottom: 6px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--primary-light);
+            color: var(--text-muted);
+            font-size: 0.85em;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* RWD 響應式微調 (手機版) */
+        @media (max-width: 680px) {
+            .grid-3, .two-column-list {
+                display: block;
+                margin: 0;
+            }
+            .grid-col, .col-card {
+                display: block;
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            .content {
+                padding: 15px 12px;
+            }
+            table th, table td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🌲 太平山二天一夜行程手冊</h1>
+        <div class="subtitle">VERSION 1.0 | 森林鐵道・雲海步道・鳩之澤溫泉</div>
+    </header>
+
+    <div class="content">
+
+        <!-- Day 1 行程 -->
+        <div class="day-box">
+            <div class="day-header">
+                <span>DAY 1：台北 ➔ 宜蘭 ➔ 太平山森林遊樂區</span>
+                <span style="font-size:0.85em; font-weight:normal; opacity:0.9;">住宿：太平山莊</span>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="time-col">時間</th>
+                            <th class="activity-col">活動與行程</th>
+                            <th class="note-col">注意事項與建議</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-col">07:40–09:15</td>
+                            <td class="activity-col">台北 ➔ 宜蘭（火車）</td>
+                            <td class="note-col">建議提前 10 分鐘抵達月台候車。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">09:30</td>
+                            <td class="activity-col">宜蘭火車站取車，出發往太平山</td>
+                            <td class="note-col">建議先於市區購買車上飲水與補充零食。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">10:30</td>
+                            <td class="activity-col">經過最後加油站（大同鄉）</td>
+                            <td class="note-col">⚠️ <strong>離開此處後山上無加油站</strong>，強烈建議在此處將油箱加滿。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">11:20</td>
+                            <td class="activity-col">抵達太平山莊停車場</td>
+                            <td class="note-col">先尋找車位停妥車輛。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">11:20–11:35</td>
+                            <td class="activity-col">購買蹦蹦車車票</td>
+                            <td class="note-col">售票處位於太平山車站旁，建議優先購買 14:30 或 15:30 班次，以便安排午餐與步道行程。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">11:40–12:30</td>
+                            <td class="activity-col">午餐（太平山莊餐廳）</td>
+                            <td class="note-col">餐點以合菜、簡餐、火鍋、麵食為主；山區價格略高，尖峰用餐時段可能需耐心等候。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">12:30</td>
+                            <td class="activity-col">開車前往見晴懷古步道停車場</td>
+                            <td class="note-col">車程約 15 分鐘。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">12:50–14:10</td>
+                            <td class="activity-col">見晴懷古步道</td>
+                            <td class="note-col">單程約 0.9 km（往返約 1.8 km），步行約 60–80 分鐘（若拍照較多約需 90 分鐘）。看點：全球知名森林鐵道景觀、舊鐵軌、山谷展望、雲海景觀。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">14:30–16:10</td>
+                            <td class="activity-col">蹦蹦車 ＋ 茂興懷舊步道</td>
+                            <td class="note-col">蹦蹦車單程約 20 分鐘。抵達茂興站後可步行探索約 60 分鐘，再搭乘回程班次。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">16:20–17:10</td>
+                            <td class="activity-col">檜木原始林步道</td>
+                            <td class="note-col">全程約 0.6 km，約需 40–50 分鐘。巨大檜木林相完整、森林芬多精濃厚，是最舒服輕鬆的步道。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">17:20</td>
+                            <td class="activity-col">返回太平山莊辦理入住</td>
+                            <td class="note-col">Check-in 辦理入住手續、放置行李。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">18:00</td>
+                            <td class="activity-col">晚餐（太平山莊餐廳）</td>
+                            <td class="note-col">享用山莊提供之晚餐。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">19:00–20:30</td>
+                            <td class="activity-col">夜間散步與觀星</td>
+                            <td class="note-col">若天氣晴朗可至觀景平台觀星（山區無光害）。⚠️ 夜晚氣溫通常比白天低約 8–10°C，請做好保暖。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 下午步道特色比較 -->
+        <h3 class="section-title">📊 Day 1 下午三條步道特色比較</h3>
+        <div class="grid-3">
+            <div class="grid-col trail-card">
+                <h4>見晴懷古步道</h4>
+                <div class="rating">評分：★★★★★</div>
+                <ul>
+                    <li>全球知名森林步道之一</li>
+                    <li>特色舊森林鐵道與山谷景觀</li>
+                    <li>極易出現壯麗雲海</li>
+                    <li>全線絕佳拍照點</li>
+                </ul>
+                <div class="time-tag">⏱ 預計時間：1 ~ 1.5 小時</div>
+            </div>
+
+            <div class="grid-col trail-card">
+                <h4>茂興懷舊步道</h4>
+                <div class="rating">評分：★★★★★</div>
+                <ul>
+                    <li>必須搭乘蹦蹦車才能抵達</li>
+                    <li>保留完整森林鐵道遺跡</li>
+                    <li>原始林相，人潮相對較少</li>
+                    <li>具備濃厚的歷史林業氛圍</li>
+                </ul>
+                <div class="time-tag">⏱ 預計時間：步道 50–70 分（含蹦蹦車約 1.5 小時）</div>
+            </div>
+
+            <div class="grid-col trail-card">
+                <h4>檜木原始林步道</h4>
+                <div class="rating">評分：★★★★☆</div>
+                <ul>
+                    <li>擁有巨大的紅檜與扁柏群</li>
+                    <li>享受極佳的森林芬多精浴</li>
+                    <li>全程路勢平緩，走起來極為舒服</li>
+                    <li>非常適合傍晚時段慢走散步</li>
+                </ul>
+                <div class="time-tag">⏱ 預計時間：40 ~ 50 分鐘</div>
+            </div>
+        </div>
+
+        <!-- Day 2 行程 -->
+        <h3 class="section-title" style="margin-top: 40px;">📅 Day 2 行程規劃</h3>
+        <div class="day-box">
+            <div class="day-header" style="background-color: #3b6e52;">
+                <span>DAY 2：翠峰湖 ➔ 鐵杉林 ➔ 鳩之澤溫泉 ➔ 賦歸</span>
+                <span style="font-size:0.85em; font-weight:normal; opacity:0.9;">宜蘭市還車</span>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="time-col">時間</th>
+                            <th class="activity-col">活動與行程</th>
+                            <th class="note-col">注意事項與建議</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-col">07:00</td>
+                            <td class="activity-col">享用早餐</td>
+                            <td class="note-col">建議於 07:30 前準時出發，爭取早晨佳景。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">07:30</td>
+                            <td class="activity-col">前往翠峰景觀道路</td>
+                            <td class="note-col">車程約 40 分鐘。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">08:15</td>
+                            <td class="activity-col">觀日平台停留</td>
+                            <td class="note-col">預計停留 15 分鐘。晴天時可遠眺蘭陽平原與壯觀雲海。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">08:40</td>
+                            <td class="activity-col">翠峰湖觀景台拍照</td>
+                            <td class="note-col">停留約 20–30 分鐘，欣賞台灣最大高山湖泊。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">09:10–12:00</td>
+                            <td class="activity-col">翠峰湖環山步道</td>
+                            <td class="note-col">全長約 3.95 km，歷時約 2.5–3 小時。太平山極力推薦之步道，兼具湖景、山毛櫸與原始森林體驗。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">12:20</td>
+                            <td class="activity-col">享用午餐</td>
+                            <td class="note-col">建議返回太平山莊餐廳，或提前準備簡易餐點於休息區享用。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">13:30–14:10</td>
+                            <td class="activity-col">鐵杉林自然步道（推薦補充）</td>
+                            <td class="note-col">歷時約 30–40 分鐘。頂端觀景台視野極佳，可俯瞰蘭陽溪谷，風格與檜木原始林截然不同。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">14:20</td>
+                            <td class="activity-col">離開園區，開始下山</td>
+                            <td class="note-col">山路行駛請注意安全與過彎車速。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">15:20–17:00</td>
+                            <td class="activity-col">鳩之澤溫泉體驗</td>
+                            <td class="note-col">泡湯放鬆、體驗溫泉水煮蛋與玉米、休息片刻。</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">18:00 左右</td>
+                            <td class="activity-col">返回宜蘭市還車 ➔ 晚餐 ➔ 賦歸</td>
+                            <td class="note-col">於宜蘭市區歸還租賃車輛，享用市區美食後搭車返回台北。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 鳩之澤煮食指南 -->
+        <div class="info-box">
+            <h4>🥚 鳩之澤煮食攻略與限制說明</h4>
+            <p style="margin-bottom: 8px;"><strong>可以自備食物嗎？</strong> 可以，但食材有嚴格限制以維護泉質與衛生。</p>
+            <div style="margin-bottom: 6px;"><strong>✅ 適合攜帶：</strong> 雞蛋、玉米、地瓜、茭白筍。</div>
+            <div style="margin-bottom: 6px;"><strong>❌ 請勿攜帶：</strong> 生肉、海鮮、容易污染泉水的食材或過大量食材。</div>
+            <p style="font-size: 0.88em; color: #78350f; margin-top: 6px;">💡 <em>貼心提示：現場販賣部有販售雞蛋、玉米以及租借煮食網袋，若僅打算煮蛋，直接在現場購買最省事便利。</em></p>
+        </div>
+
+        <!-- 穿著與裝備指南 -->
+        <h3 class="section-title">🎒 行程裝備與穿著建議（海拔約 2,000 公尺）</h3>
+
+        <!-- 溫差說明 -->
+        <div class="day-box" style="margin-bottom: 20px;">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>時段</th>
+                            <th>預估氣溫 (7-8月)</th>
+                            <th>穿著建議說明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>中午時段</strong></td>
+                            <td>20 – 24 °C</td>
+                            <td>短袖 ＋ 薄外套即可，步行運動時體感非常舒適不太熱。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>清晨時段</strong></td>
+                            <td>16 – 19 °C</td>
+                            <td>建議穿著薄刷毛外套或具防風功能之外套。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>夜晚觀星</strong></td>
+                            <td>16 – 18 °C</td>
+                            <td>長袖衣服 ＋ 防風外套；觀星時停留時間長，靜止狀態會感到明顯偏涼。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="padding: 10px 16px; background: #fffbe3; font-size: 0.88em; color: #854d0e;">
+                🌧️ <strong>氣候提醒：</strong> 高山地區午後常有短暫陣雨，下雨後體感溫度會迅速降低，請務必隨身攜帶雨具。
+            </div>
+        </div>
+
+        <!-- 必備清單分類 -->
+        <div class="two-column-list">
+            <div class="col-card">
+                <h4>📌 隨身證件與個人必備</h4>
                 <ul>
                     <li><strong>證件類：</strong> 健保卡 / 身分證、駕照（駕駛必備）</li>
                     <li><strong>資金：</strong> 現金（山區部分設施與販賣部不支援刷卡）</li>
