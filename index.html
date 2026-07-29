@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>太平山二天一夜行程手冊 (V2.2)</title>
+    <title>太平山二天一夜行程手冊 (V3.0)</title>
     <style>
         :root {
             --primary-color: #2e5a44;      /* 森林深綠 */
@@ -63,6 +63,32 @@
 
         .content {
             padding: 30px 25px;
+        }
+
+        /* 圖片容器與樣式 (響應式縮放) */
+        .img-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            transition: transform 0.3s ease;
+        }
+
+        .img-container img:hover {
+            transform: scale(1.01);
+        }
+
+        .img-caption {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-style: italic;
         }
 
         /* 區塊標題 */
@@ -321,10 +347,23 @@
 <div class="container">
     <header>
         <h1>🌲 太平山二天一夜行程手冊</h1>
-        <div class="subtitle">VERSION 2.2 | 森林鐵道・雲海步道・鳩之澤溫泉</div>
+        <div class="subtitle">VERSION 3.0 | 森林鐵道・雲海步道・鳩之澤溫泉</div>
     </header>
 
     <div class="content">
+
+        <!-- 🖼️ 圖三：水彩手繪霧林之歌形象圖 (形象 Banner) -->
+        <div class="img-container">
+            <img src="images/map-art.png" alt="太平山檜木原始林步道及周邊步道群 - 霧林之歌">
+            <div class="img-caption">🎨 太平山國家森林遊樂區 - 霧林之歌手繪導覽全景圖</div>
+        </div>
+
+        <!-- 🖼️ 圖一：開車路線與里程示意圖 (路線參考) -->
+        <h3 class="section-title">🚘 宜專一線與翠峰景觀道路路線示意</h3>
+        <div class="img-container">
+            <img src="images/map-route.png" alt="太平山宜專一線及翠峰景觀道路地圖與車程時間">
+            <div class="img-caption">📍 開車路線里程、景點位置與預估車程時間示意圖</div>
+        </div>
 
         <!-- Day 1 行程 -->
         <div class="day-box">
@@ -418,6 +457,13 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+
+        <!-- 🖼️ 圖二：太平山莊各館位置示意圖 (入園遊歷/住宿參考) -->
+        <h3 class="section-title">🏡 太平山莊各館與設施位置圖</h3>
+        <div class="img-container">
+            <img src="images/map-villa.png" alt="太平山莊各館位置示意圖與中央階梯指南">
+            <div class="img-caption">🏢 太平山莊各住宿館別、餐廳、觀景平台與中央階梯階梯數對照</div>
         </div>
 
         <!-- 下午步道特色比較 -->
@@ -598,7 +644,7 @@
             <h4>🥚 3. 鳩之澤煮食攻略與限制說明</h4>
             <p style="margin-bottom: 8px;"><strong>自備食材：</strong> 雞蛋、玉米、地瓜、茭白筍。</p>
             <p style="margin-bottom: 8px;"><strong>禁止攜帶：</strong> 生肉、海鮮及易污染泉水之食材。</p>
-            <p style="font-size: 0.88em; color: #78350f;">💡 <em>現場服務：販販部有售雞蛋、玉米及煮食網袋租借。</em></p>
+            <p style="font-size: 0.88em; color: #78350f;">💡 <em>現場服務：販賣部有售雞蛋、玉米及煮食網袋租借。</em></p>
         </div>
 
         <!-- 🎒 穿著與裝備清單 -->
@@ -641,6 +687,13 @@
             </p>
         </div>
 
+        <!-- 🖼️ 圖四：全區遊覽與營業資訊折頁 (文末資訊) -->
+        <h3 class="section-title">🗺️ 太平山國家森林遊樂區全區導覽與服務資訊</h3>
+        <div class="img-container">
+            <img src="images/map-guide.jpg" alt="太平山國家森林遊樂區全區導覽與服務設施營業時間資訊">
+            <div class="img-caption">📖 園區步道長度、往返時間、生態旅遊守則與各據點服務電話一覽表</div>
+        </div>
+
         <!-- 🔗 延伸連結 -->
         <h3 class="section-title">🔗 延伸景點與園區導覽地圖連結</h3>
         <div style="background: #fff; border: 1px solid var(--border-color); border-radius: 8px; padding: 18px; margin-bottom: 30px;">
@@ -657,7 +710,7 @@
     </div>
 
     <footer>
-        <p>太平山二天一夜行程手冊 (V2.2) | Hosted on GitHub Pages</p>
+        <p>太平山二天一夜行程手冊 (V3.0) | Hosted on GitHub Pages</p>
     </footer>
 </div>
 
